@@ -66,5 +66,5 @@ keymap.set("n", "<leader>gs", "<cmd>Telescope git_status<cr>") -- list current c
 keymap.set("n", "<leader>rs", ":LspRestart<CR>") -- mapping to restart lsp if necessary
 
 -- floating terminal
-keymap.set("n", "<leader>t", ":FloatermToggle<CR>", { desc = "Toggle Floating Terminal" })
-keymap.set("t", "<leader>t", "<C-\\><C-n>:FloatermToggle<CR>", { desc = "Toggle Floating Terminal" })
+-- keymap.set("n", "<leader>t", ":FloatermToggle<CR>", { desc = "Toggle Floating Terminal" })
+-- keymap.set("t", "<leader>t", "<C-\\><C-n>:FloatermToggle<CR>", { desc = "Toggle Floating Terminal" })
