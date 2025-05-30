@@ -24,7 +24,6 @@ return {
 			-- ensure these language parsers are installed
 			ensure_installed = {
 				"json",
-				"javascript",
 				"yaml",
 				"markdown",
 				"markdown_inline",
@@ -38,7 +37,6 @@ return {
 				"c",
 				"cpp",
 				"python",
-				"powershell",
 			},
 			incremental_selection = {
 				enable = true,

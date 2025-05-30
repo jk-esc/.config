@@ -4,17 +4,32 @@ return {
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
-		{ "folke/neodev.nvim", opts = {} },
+		{
+			"folke/neodev.nvim",
+			opts = { -- Example opts, adjust if you kept neodev
+				settings = {
+					Lua = {
+						completion = {
+							callSnippet = "Replace",
+						},
+						workspace = {
+							checkThirdParty = false,
+						},
+						telemetry = {
+							enable = false,
+						},
+					},
+				},
+			},
+		},
+		"williamboman/mason-lspconfig.nvim",
 	},
 	config = function()
 		-- import lspconfig plugin
-		local lspconfig = require("lspconfig")
-
-		-- import mason_lspconfig plugin
-		local mason_lspconfig = require("mason-lspconfig")
+		-- local lspconfig = require("lspconfig") -- Not strictly needed if mason-lspconfig handles all setups
 
 		-- import cmp-nvim-lsp plugin
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
+		-- local cmp_nvim_lsp = require("cmp_nvim_lsp") -- Capabilities are now typically handled in mason.lua's handlers
 
 		local keymap = vim.keymap -- for conciseness
 
@@ -67,43 +82,21 @@ return {
 			end,
 		})
 
-		-- used to enable autocompletion (assign to every lsp server config)
-		local capabilities = cmp_nvim_lsp.default_capabilities()
-
-		-- Change the Diagnostic symbols in the sign column (gutter)
-		-- (not in youtube nvim video)
-		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-		end
-
-		mason_lspconfig.setup_handlers({
-			-- default handler for installed servers
-			function(server_name)
-				lspconfig[server_name].setup({
-					capabilities = capabilities,
-				})
-			end,
-			["lua_ls"] = function()
-				-- configure lua server (with special settings)
-				lspconfig["lua_ls"].setup({
-					capabilities = capabilities,
-					settings = {
-						Lua = {
-							-- make the language server recognize "vim" global
-							diagnostics = {
-								globals = { "vim" },
-								undefined_global = false, -- remove this from diag!
-								missing_parameters = false, -- missing fields :)
-							},
-							completion = {
-								callSnippet = "Replace",
-							},
-						},
-					},
-				})
-			end,
+		-- Configure diagnostic signs using the new API
+		vim.diagnostic.config({
+			signs = {
+				text = {
+					[vim.diagnostic.severity.ERROR] = " ", -- Nerd Font Error icon
+					[vim.diagnostic.severity.WARN] = " ", -- Nerd Font Warning icon
+					[vim.diagnostic.severity.HINT] = "󰠠 ", -- Nerd Font Hint icon
+					[vim.diagnostic.severity.INFO] = " ", -- Nerd Font Info icon
+				},
+			},
+			-- You can also configure other diagnostic options here:
+			virtual_text = false, -- Example: disable virtual text diagnostics
+			underline = true, -- Example: enable underline diagnostics
+			update_in_insert = false, -- Example: don't update diagnostics in insert mode
+			severity_sort = true, -- Example: sort diagnostics by severity
 		})
 	end,
 }

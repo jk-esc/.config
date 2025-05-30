@@ -7,12 +7,6 @@ return {
 			vim.g.floaterm_title = " typeshit "
 			-- Mapping <leader>ft to toggle Floaterm
 			vim.api.nvim_set_keymap("n", "<leader>ft", ":FloatermToggle<CR>", { noremap = true, silent = true })
-			vim.api.nvim_set_keymap(
-				"t",
-				"<leader>ft",
-				"<C-\\><C-n>:FloatermToggle<CR>",
-				{ noremap = true, silent = true }
-			)
 		end,
 	},
 }
