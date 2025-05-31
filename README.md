@@ -1,5 +1,5 @@
-# .config
+### Neovim v0.11.1, previously used v0.10.x, updating caused some things to break (mostly Mason, but i fixed it), switched it up a little.
 
-### This neovim config is heavily influenced by https://www.youtube.com/@joseanmartinez
-### My ghostty terminal emulator configuration is pretty much the same as my old alacritty 
-### Standard neofetch for macOS 
+### Very standard ghostty terminal emulator (blazingly fast).
+
+### Neofetch for macOS, because FOMO.
