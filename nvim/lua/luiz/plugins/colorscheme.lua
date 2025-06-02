@@ -1,6 +1,6 @@
 return {
 	"navarasu/onedark.nvim",
-	priority = 1000,
+	--priority = 1000,
 	config = function()
 		local onedark = require("onedark")
 
@@ -35,6 +35,13 @@ return {
 				-- For Floaterm and general Float window transparency
 				NormalFloat = { bg = "none" },
 				FloatBorder = { bg = "none", fg = "$blue" },
+
+				-- comments
+				["@comment"] = { fg = "#cccccc" },
+				["@lsp.type.comment"] = { fg = "cccccc" },
+
+				-- Visual mode
+				Visual = { bg = "#6c7a8a" },
 
 				-- Ensure other common UI elements respect transparency too
 				Pmenu = { bg = "none", fg = "$fg" },
