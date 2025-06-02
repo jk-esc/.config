@@ -1,7 +1,7 @@
 font-family = BerkeleyMono Nerd Font 
 font-size = 16
-background-opacity = 0.95
-background-blur-radius = 35
+background-opacity = 0.70
+background-blur-radius = 10
 theme = GruvboxDarkHard 
 mouse-hide-while-typing = true 
 mouse-scroll-multiplier = 2
