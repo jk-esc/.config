@@ -68,3 +68,9 @@ keymap.set("n", "<leader>rs", ":LspRestart<CR>") -- mapping to restart lsp if ne
 -- floating terminal
 -- keymap.set("n", "<leader>t", ":FloatermToggle<CR>", { desc = "Toggle Floating Terminal" })
 -- keymap.set("t", "<leader>t", "<C-\\><C-n>:FloatermToggle<CR>", { desc = "Toggle Floating Terminal" })
+
+-- Remap movements when in insert mode
+vim.keymap.set("i", "<C-h>", "<Left>")
+vim.keymap.set("i", "<C-l>", "<Right>")
+vim.keymap.set("i", "<C-j>", "<Down>")
+vim.keymap.set("i", "<C-k>", "<Up>")
