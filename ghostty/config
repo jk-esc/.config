@@ -1,20 +1,16 @@
 #font-family = BerkeleyMono Nerd Font 
 font-family = MesloLGS Nerd Font Mono
 font-size = 18
-#background-opacity = 0.70
+#background-opacity = 0.35
 #background-blur-radius = 30
-theme = GruvboxDark
+theme = Gruvbox Dark
 mouse-hide-while-typing = true 
 mouse-scroll-multiplier = 2
 window-padding-balance = true 
 window-save-state = always 
 macos-titlebar-style = transparent 
 window-colorspace = "display-p3"
+#macos-titlebar-style = hidden
 window-decoration = true
 background = 1C2021
-
-# key bindings 
-
-
-
-
+gtk-titlebar=false

@@ -2,4 +2,8 @@
 
 ### Very standard ghostty terminal emulator (blazingly fast).
 
-### Neofetch for macOS, because FOMO.
+### Fastfetch, because FOMO.
+
+### Btop instead of Htop beause it's beautiful.
+
+### Starship instead of p10k because it's new and shiny.
