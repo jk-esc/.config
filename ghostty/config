@@ -1,7 +1,7 @@
 #font-family = BerkeleyMono Nerd Font 
 font-family = MesloLGS Nerd Font Mono
 font-size = 18
-#background-opacity = 0.35
+#background-opacity = 0.55
 #background-blur-radius = 30
 theme = Gruvbox Dark
 mouse-hide-while-typing = true 
