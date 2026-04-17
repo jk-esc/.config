@@ -5,20 +5,11 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 		{
-			"folke/neodev.nvim",
-			opts = { -- Example opts, adjust if you kept neodev
-				settings = {
-					Lua = {
-						completion = {
-							callSnippet = "Replace",
-						},
-						workspace = {
-							checkThirdParty = false,
-						},
-						telemetry = {
-							enable = false,
-						},
-					},
+			"folke/lazydev.nvim",
+			ft = "lua",
+			opts = {
+				library = {
+					{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 				},
 			},
 		},

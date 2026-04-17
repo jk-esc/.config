@@ -37,6 +37,13 @@ return {
 				"c",
 				"cpp",
 				"python",
+				-- web dev
+				"javascript",
+				"typescript",
+				"tsx",
+				"html",
+				"css",
+				"svelte",
 			},
 			incremental_selection = {
 				enable = true,

@@ -24,14 +24,59 @@ return {
 			},
 		})
 
+		local lspconfig = require("lspconfig")
+		local cmp_nvim_lsp = require("cmp_nvim_lsp")
+		local capabilities = cmp_nvim_lsp.default_capabilities()
+
 		---@diagnostic disable-next-line: missing-fields
 		mason_lspconfig.setup({
 			-- list of servers for mason to install
 			ensure_installed = {
 				"lua_ls",
 				"clangd",
-				"pylsp",
+				"pyright",
 				"bashls",
+				-- web dev
+				"ts_ls",
+				"svelte",
+				"html",
+				"cssls",
+				"eslint",
+				"tailwindcss",
+			},
+			handlers = {
+				-- default handler
+				function(server_name)
+					lspconfig[server_name].setup({
+						capabilities = capabilities,
+					})
+				end,
+				["lua_ls"] = function()
+					lspconfig.lua_ls.setup({
+						capabilities = capabilities,
+						settings = {
+							Lua = {
+								completion = { callSnippet = "Replace" },
+								workspace = { checkThirdParty = false },
+								telemetry = { enable = false },
+							},
+						},
+					})
+				end,
+				-- svelte needs to know about ts files for cross-file awareness
+				["svelte"] = function()
+					lspconfig.svelte.setup({
+						capabilities = capabilities,
+						on_attach = function(client, _)
+							vim.api.nvim_create_autocmd("BufWritePost", {
+								pattern = { "*.js", "*.ts" },
+								callback = function(ctx)
+									client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+								end,
+							})
+						end,
+					})
+				end,
 			},
 		})
 
@@ -39,9 +84,9 @@ return {
 			ensure_installed = {
 				"prettier", -- prettier formatter
 				"stylua", -- lua formatter
-				"isort", -- python formatter
-				"pylint", -- python formatter
-				"black", -- python formatter
+				"ruff", -- python linter + formatter
+				"debugpy", -- python debugger
+				"eslint_d", -- js/ts linter
 			},
 		})
 	end,
