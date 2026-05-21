@@ -1,59 +1,42 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	event = { "BufReadPre", "BufNewFile" },
+	branch = "main",
+	lazy = false,
 	build = ":TSUpdate",
 	dependencies = {
 		"windwp/nvim-ts-autotag",
 	},
 	config = function()
-		-- import nvim-treesitter plugin
-		local treesitter = require("nvim-treesitter.configs")
-
-		-- configure treesitter
-		---@diagnostic disable-next-line: missing-fields
-		treesitter.setup({ -- enable syntax highlighting
-			highlight = {
-				enable = true,
-			},
-			-- enable indentation
-			indent = { enable = true },
-			-- enable autotagging (w/ nvim-ts-autotag plugin)
-			autotag = {
-				enable = true,
-			},
-			-- ensure these language parsers are installed
-			ensure_installed = {
-				"json",
-				"yaml",
-				"markdown",
-				"markdown_inline",
-				"bash",
-				"lua",
-				"vim",
-				"dockerfile",
-				"gitignore",
-				"query",
-				"vimdoc",
-				"c",
-				"cpp",
-				"python",
-				-- web dev
-				"javascript",
-				"typescript",
-				"tsx",
-				"html",
-				"css",
-				"svelte",
-			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<C-space>",
-					node_incremental = "<C-space>",
-					scope_incremental = false,
-					node_decremental = "<bs>",
-				},
-			},
+		require("nvim-treesitter").install({
+			"json",
+			"yaml",
+			"markdown",
+			"markdown_inline",
+			"bash",
+			"lua",
+			"vim",
+			"dockerfile",
+			"gitignore",
+			"query",
+			"vimdoc",
+			"c",
+			"cpp",
+			"python",
+			"javascript",
+			"typescript",
+			"tsx",
+			"html",
+			"css",
+			"svelte",
 		})
+
+		vim.api.nvim_create_autocmd("FileType", {
+			callback = function()
+				pcall(vim.treesitter.start)
+				vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+			end,
+		})
+
+		require("nvim-ts-autotag").setup()
 	end,
 }
