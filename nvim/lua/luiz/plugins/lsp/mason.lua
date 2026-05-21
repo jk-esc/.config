@@ -25,8 +25,7 @@ return {
 		})
 
 		local lspconfig = require("lspconfig")
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
-		local capabilities = cmp_nvim_lsp.default_capabilities()
+		local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 		---@diagnostic disable-next-line: missing-fields
 		mason_lspconfig.setup({
