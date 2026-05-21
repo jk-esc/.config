@@ -1,4 +1,4 @@
-### Neovim v0.11.1, previously used v0.10.x, updating caused some things to break (mostly Mason, but i fixed it), switched it up a little.
+### Neovim v0.12.2, previously used v0.11.x
 
 ### Very standard ghostty terminal emulator (blazingly fast).
 
