@@ -1,3 +1,15 @@
+keybind = opt+h=goto_split:left
+keybind = opt+j=goto_split:bottom	
+keybind = opt+k=goto_split:top
+keybind = opt+l=goto_split:right
+
+keybind = opt+shift+h=new_split:left
+keybind = opt+shift+j=new_split:down
+keybind = opt+shift+k=new_split:up
+keybind = opt+shift+l=new_split:right
+
+#-----
+
 font-family = BerkeleyMono Nerd Font 
 #font-family = MesloLGS Nerd Font Mono
 font-size = 18
@@ -15,3 +27,5 @@ background = 1C2021
 gtk-titlebar=false
 window-show-tab-bar = never
 #macos-titlebar-style = hidden
+
+custom-shader = ~/.config/ghostty/shaders/WIP.glsl
