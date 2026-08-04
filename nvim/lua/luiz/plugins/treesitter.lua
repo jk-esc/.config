@@ -21,6 +21,7 @@ return {
 			"vimdoc",
 			"c",
 			"cpp",
+			"java",
 			"python",
 			"javascript",
 			"typescript",

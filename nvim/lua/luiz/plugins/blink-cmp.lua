@@ -10,6 +10,12 @@ return {
     "rafamadriz/friendly-snippets",
   },
   opts = {
+    -- dressing.nvim renders vim.ui.input (nvim-tree add/rename/delete prompts)
+    -- as a scratch buffer with filetype "DressingInput". Disable completion there
+    -- so typing a filename / y-N answer isn't hijacked by snippet/path completion.
+    enabled = function()
+      return vim.bo.filetype ~= "DressingInput"
+    end,
     keymap = {
       preset = "none",
       ["<C-k>"] = { "select_prev", "fallback" },
@@ -56,19 +62,9 @@ return {
         },
       },
     },
-    cmdline = {
-      keymap = { preset = "cmdline" },
-      sources = function()
-        local type = vim.fn.getcmdtype()
-        if type == "/" or type == "?" then
-          return { "buffer" }
-        end
-        if type == ":" then
-          return { "cmdline" }
-        end
-        return {}
-      end,
-    },
+    -- No completion in command-line mode: ":" commands, "/" "?" search, and
+    -- input() prompts (nvim-tree add/rename + its y/N confirmation) stay native.
+    cmdline = { enabled = false },
   },
   config = function(_, opts)
     require("luasnip.loaders.from_vscode").lazy_load()

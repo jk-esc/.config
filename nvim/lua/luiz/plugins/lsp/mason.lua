@@ -1,5 +1,6 @@
 return {
 	"williamboman/mason.nvim",
+	event = "VeryLazy",
 	dependencies = {
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -29,6 +30,11 @@ return {
 
 		---@diagnostic disable-next-line: missing-fields
 		mason_lspconfig.setup({
+			-- jdtls is managed by nvim-jdtls (lua/luiz/plugins/lsp/java.lua),
+			-- so don't let mason-lspconfig auto-start a second one.
+			automatic_enable = {
+				exclude = { "jdtls" },
+			},
 			-- list of servers for mason to install
 			ensure_installed = {
 				"lua_ls",
@@ -86,6 +92,10 @@ return {
 				"ruff", -- python linter + formatter
 				"debugpy", -- python debugger
 				"eslint_d", -- js/ts linter
+				-- java (driven by nvim-jdtls, not mason-lspconfig)
+				"jdtls", -- java language server
+				"java-debug-adapter", -- debugging bundle
+				"java-test", -- test-running bundle
 			},
 		})
 	end,
