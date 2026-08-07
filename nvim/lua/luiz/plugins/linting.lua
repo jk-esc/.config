@@ -4,6 +4,9 @@ return {
 	config = function()
 		local lint = require("lint")
 
+		local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+		vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+
 		lint.linters_by_ft = {
 			python = { "ruff" },
 			javascript = { "eslint_d" },
