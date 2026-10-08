@@ -1,6 +1,6 @@
 return {
 	"navarasu/onedark.nvim",
-	--priority = 1000,
+	priority = 1000,
 	config = function()
 		local onedark = require("onedark")
 
@@ -38,7 +38,7 @@ return {
 
 				-- comments
 				["@comment"] = { fg = "#cccccc" },
-				["@lsp.type.comment"] = { fg = "cccccc" },
+				["@lsp.type.comment"] = { fg = "#cccccc" },
 
 				-- Visual mode
 				Visual = { bg = "#6c7a8a" },

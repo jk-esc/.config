@@ -32,9 +32,13 @@ return {
 		})
 
 		vim.api.nvim_create_autocmd("FileType", {
+			group = vim.api.nvim_create_augroup("luiz_treesitter", { clear = true }),
 			callback = function()
-				pcall(vim.treesitter.start)
-				vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				-- Only take over indenting when a parser exists; otherwise keep the
+				-- filetype's own indentexpr.
+				if pcall(vim.treesitter.start) then
+					vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end
 			end,
 		})
 

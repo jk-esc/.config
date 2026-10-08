@@ -45,7 +45,6 @@ Open Neovim — lazy.nvim bootstraps itself and installs all plugins on first la
 | File tree | nvim-tree |
 | Git | gitsigns |
 | Formatting | conform.nvim |
-| Linting | nvim-lint |
 | Debugging | nvim-dap |
 | Syntax | nvim-treesitter |
 | Diagnostics | trouble.nvim |
@@ -95,11 +94,11 @@ Open Neovim — lazy.nvim bootstraps itself and installs all plugins on first la
 | `gi` | Go to implementation |
 | `gR` | Show references |
 | `gt` | Show type definition |
-| `K` | Hover documentation |
+| `<leader>k` | Hover documentation |
 | `<leader>rn` | Rename symbol |
 | `<leader>ca` | Code action |
-| `<leader>d` | Line diagnostics |
-| `<leader>D` | File diagnostics |
+| `gl` | Line diagnostics |
+| `<leader>fd` | File diagnostics |
 | `[d` / `]d` | Previous / next diagnostic |
 | `<leader>rs` | Restart LSP |
 
@@ -130,6 +129,16 @@ Open Neovim — lazy.nvim bootstraps itself and installs all plugins on first la
 | `<leader>xd` | Document diagnostics |
 | `<leader>xt` | Todo list |
 | `<leader>xq` | Quickfix list |
+
+**Debugging (nvim-dap)**
+
+| Key | Action |
+|-----|--------|
+| `<leader>bb` / `<leader>bB` | Toggle breakpoint / conditional breakpoint |
+| `<leader>bc` | Start / continue |
+| `<leader>bi/bo/bO` | Step into / over / out |
+| `<leader>bu` | Toggle DAP UI |
+| `<leader>bt` | Terminate session |
 
 ---
 

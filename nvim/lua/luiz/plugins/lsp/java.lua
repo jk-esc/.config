@@ -60,8 +60,10 @@ return {
 			bundles,
 			vim.split(vim.fn.glob(mason .. "/packages/java-test/extension/server/*.jar", true), "\n")
 		)
+		-- These java-test jars must not be loaded as jdtls bundles (see nvim-jdtls README).
+		local excluded = { "com.microsoft.java.test.runner-jar-with-dependencies.jar", "jacocoagent.jar" }
 		bundles = vim.tbl_filter(function(v)
-			return v ~= ""
+			return v ~= "" and not vim.tbl_contains(excluded, vim.fn.fnamemodify(v, ":t"))
 		end, bundles)
 
 		local capabilities = require("blink.cmp").get_lsp_capabilities()

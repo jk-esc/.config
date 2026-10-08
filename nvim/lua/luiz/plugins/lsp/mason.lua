@@ -25,15 +25,25 @@ return {
 			},
 		})
 
-		local lspconfig = require("lspconfig")
-		local capabilities = require("blink.cmp").get_lsp_capabilities()
+		-- Server overrides merge onto nvim-lspconfig's lsp/<name>.lua defaults.
+		-- blink.cmp registers its completion capabilities on vim.lsp.config("*").
+		vim.lsp.config("lua_ls", {
+			settings = {
+				Lua = {
+					completion = { callSnippet = "Replace" },
+					workspace = { checkThirdParty = false },
+					telemetry = { enable = false },
+				},
+			},
+		})
 
 		---@diagnostic disable-next-line: missing-fields
 		mason_lspconfig.setup({
-			-- jdtls is managed by nvim-jdtls (lua/luiz/plugins/lsp/java.lua),
-			-- so don't let mason-lspconfig auto-start a second one.
+			-- automatic_enable starts every *installed* Mason server, so exclude:
+			-- jdtls (managed by nvim-jdtls in lua/luiz/plugins/lsp/java.lua),
+			-- pylsp (pyright + ruff cover python), stylua (conform formats lua).
 			automatic_enable = {
-				exclude = { "jdtls" },
+				exclude = { "jdtls", "pylsp", "stylua" },
 			},
 			-- list of servers for mason to install
 			ensure_installed = {
@@ -49,49 +59,14 @@ return {
 				"eslint",
 				"tailwindcss",
 			},
-			handlers = {
-				-- default handler
-				function(server_name)
-					lspconfig[server_name].setup({
-						capabilities = capabilities,
-					})
-				end,
-				["lua_ls"] = function()
-					lspconfig.lua_ls.setup({
-						capabilities = capabilities,
-						settings = {
-							Lua = {
-								completion = { callSnippet = "Replace" },
-								workspace = { checkThirdParty = false },
-								telemetry = { enable = false },
-							},
-						},
-					})
-				end,
-				-- svelte needs to know about ts files for cross-file awareness
-				["svelte"] = function()
-					lspconfig.svelte.setup({
-						capabilities = capabilities,
-						on_attach = function(client, _)
-							vim.api.nvim_create_autocmd("BufWritePost", {
-								pattern = { "*.js", "*.ts" },
-								callback = function(ctx)
-									client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-								end,
-							})
-						end,
-					})
-				end,
-			},
 		})
 
 		mason_tool_installer.setup({
 			ensure_installed = {
 				"prettier", -- prettier formatter
 				"stylua", -- lua formatter
-				"ruff", -- python linter + formatter
+				"ruff", -- python linter (auto-enabled as an LSP) + formatter
 				"debugpy", -- python debugger
-				"eslint_d", -- js/ts linter
 				-- java (driven by nvim-jdtls, not mason-lspconfig)
 				"jdtls", -- java language server
 				"java-debug-adapter", -- debugging bundle

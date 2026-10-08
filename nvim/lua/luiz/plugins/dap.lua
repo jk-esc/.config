@@ -6,7 +6,7 @@ return {
 			"nvim-neotest/nvim-nio",
 			"theHamsta/nvim-dap-virtual-text",
 		},
-		keys = { "<leader>db", "<leader>dB", "<leader>dc", "<leader>di", "<leader>do", "<leader>dO", "<leader>dr", "<leader>du", "<leader>dt" },
+		keys = { "<leader>bb", "<leader>bB", "<leader>bc", "<leader>bi", "<leader>bo", "<leader>bO", "<leader>br", "<leader>bu", "<leader>bt" },
 		config = function()
 			local dap = require("dap")
 			local dapui = require("dapui")
@@ -27,17 +27,17 @@ return {
 
 			-- Keymaps
 			local keymap = vim.keymap
-			keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
-			keymap.set("n", "<leader>dB", function()
+			keymap.set("n", "<leader>bb", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+			keymap.set("n", "<leader>bB", function()
 				dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
 			end, { desc = "Set conditional breakpoint" })
-			keymap.set("n", "<leader>dc", dap.continue, { desc = "Continue" })
-			keymap.set("n", "<leader>di", dap.step_into, { desc = "Step into" })
-			keymap.set("n", "<leader>do", dap.step_over, { desc = "Step over" })
-			keymap.set("n", "<leader>dO", dap.step_out, { desc = "Step out" })
-			keymap.set("n", "<leader>dr", dap.repl.open, { desc = "Open REPL" })
-			keymap.set("n", "<leader>du", dapui.toggle, { desc = "Toggle DAP UI" })
-			keymap.set("n", "<leader>dt", dap.terminate, { desc = "Terminate session" })
+			keymap.set("n", "<leader>bc", dap.continue, { desc = "Continue" })
+			keymap.set("n", "<leader>bi", dap.step_into, { desc = "Step into" })
+			keymap.set("n", "<leader>bo", dap.step_over, { desc = "Step over" })
+			keymap.set("n", "<leader>bO", dap.step_out, { desc = "Step out" })
+			keymap.set("n", "<leader>br", dap.repl.open, { desc = "Open REPL" })
+			keymap.set("n", "<leader>bu", dapui.toggle, { desc = "Toggle DAP UI" })
+			keymap.set("n", "<leader>bt", dap.terminate, { desc = "Terminate session" })
 		end,
 	},
 	{
@@ -51,9 +51,9 @@ return {
 
 			-- Additional python-specific keymaps
 			local keymap = vim.keymap
-			keymap.set("n", "<leader>dm", require("dap-python").test_method, { desc = "Debug test method" })
-			keymap.set("n", "<leader>dC", require("dap-python").test_class, { desc = "Debug test class" })
-			keymap.set("v", "<leader>ds", require("dap-python").debug_selection, { desc = "Debug selection" })
+			keymap.set("n", "<leader>bm", require("dap-python").test_method, { desc = "Debug test method" })
+			keymap.set("n", "<leader>bC", require("dap-python").test_class, { desc = "Debug test class" })
+			keymap.set("v", "<leader>bs", require("dap-python").debug_selection, { desc = "Debug selection" })
 		end,
 	},
 }
