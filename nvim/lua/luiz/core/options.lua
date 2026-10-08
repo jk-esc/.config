@@ -45,4 +45,7 @@ opt.iskeyword:append("-")
 -- turn off swapfiles
 opt.swapfile = false
 
+-- persist undo history across sessions (written on save)
+opt.undofile = true
+
 
