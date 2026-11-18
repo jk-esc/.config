@@ -16,6 +16,8 @@ return {
 
 		-- Resolve a valid JDK home by major version (macOS java_home).
 		-- Guards against a stale/broken $JAVA_HOME in the shell.
+		-- `java_home -v N` also matches newer JDKs, so confirm the major
+		-- version from the JDK's release file.
 		local function java_home(version)
 			local handle = io.popen("/usr/libexec/java_home -v " .. version .. " 2>/dev/null")
 			if not handle then
@@ -23,26 +25,37 @@ return {
 			end
 			local path = handle:read("*a"):gsub("%s+$", "")
 			handle:close()
-			return path ~= "" and path or nil
+			local release = path ~= "" and io.open(path .. "/release")
+			if not release then
+				return nil
+			end
+			local major = release:read("*a"):match('JAVA_VERSION="(%d+)')
+			release:close()
+			return major == version and path or nil
 		end
 
-		local jdk21 = java_home("21")
-		local jdk25 = java_home("25")
+		local versions = { "17", "21", "25", "27" }
+		local jdks = {}
+		for _, version in ipairs(versions) do
+			jdks[version] = java_home(version)
+		end
 
 		-- Run the language server itself on a stable LTS if available.
-		local server_jdk = jdk21 or jdk25
+		local server_jdk = jdks["21"] or jdks["25"]
 		if server_jdk then
 			vim.env.JAVA_HOME = server_jdk
 		end
 
 		-- Expose installed JDKs so projects resolve source/target levels.
 		local runtimes = {}
-		if jdk21 then
-			table.insert(runtimes, { name = "JavaSE-21", path = jdk21, default = true })
+		for _, version in ipairs(versions) do
+			if jdks[version] then
+				table.insert(runtimes, { name = "JavaSE-" .. version, path = jdks[version], default = version == "21" })
+			end
 		end
-		if jdk25 then
-			table.insert(runtimes, { name = "JavaSE-25", path = jdk25 })
-		end
+
+		-- Lombok ships inside mason's jdtls package; load it as a java agent.
+		local lombok = mason .. "/packages/jdtls/lombok.jar"
 
 		-- Debug + test bundles (installed via mason: java-debug-adapter, java-test).
 		local bundles = {}
@@ -69,15 +82,27 @@ return {
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 		local function start()
-			local root_markers = { "gradlew", "mvnw", "pom.xml", "build.gradle", "settings.gradle", ".git" }
+			-- Prefer the outermost build (wrapper/settings file) so multi-module
+			-- projects share one root, then any build file, then the git root.
+			local root_markers = {
+				{ "gradlew", "mvnw", "settings.gradle", "settings.gradle.kts" },
+				{ "pom.xml", "build.gradle", "build.gradle.kts" },
+				".git",
+			}
 			local root_dir = vim.fs.root(0, root_markers) or vim.fn.getcwd()
 
-			-- One workspace per project keeps jdtls indexes isolated.
-			local project = vim.fn.fnamemodify(root_dir, ":p:h:t")
+			-- One workspace per project keeps jdtls indexes isolated. The path
+			-- hash keeps same-named projects (e.g. two "Week_1" dirs) apart.
+			local project = vim.fn.fnamemodify(root_dir, ":p:h:t") .. "-" .. vim.fn.sha256(root_dir):sub(1, 8)
 			local workspace = vim.fn.stdpath("data") .. "/jdtls-workspace/" .. project
 
+			local cmd = { jdtls_bin, "-data", workspace }
+			if vim.uv.fs_stat(lombok) then
+				table.insert(cmd, 2, "--jvm-arg=-javaagent:" .. lombok)
+			end
+
 			local config = {
-				cmd = { jdtls_bin, "-data", workspace },
+				cmd = cmd,
 				root_dir = root_dir,
 				capabilities = capabilities,
 				init_options = { bundles = bundles },
@@ -133,6 +158,10 @@ return {
 
 					-- Rebuild project config after editing pom.xml / build.gradle
 					map("n", "<leader>ju", "<cmd>JdtUpdateConfig<CR>", "Java: Update project config")
+
+					-- Show the references/implementations code lenses configured above
+					vim.lsp.codelens.enable(true, { bufnr = bufnr })
+					map("n", "<leader>jl", vim.lsp.codelens.run, "Java: Run code lens")
 
 					-- Debugging (needs the java-debug-adapter bundle)
 					jdtls.setup_dap({ hotcodereplace = "auto" })
