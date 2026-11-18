@@ -13,10 +13,37 @@ return {
     {
       "folke/sidekick.nvim",
       opts = {
-        cli = { picker = "telescope" },
+        cli = {
+          picker = "telescope",
+          -- fractions are relative to the editor width when the window opens
+          win = { split = { width = 1 / 3 } },
+        },
       },
       config = function(_, opts)
         require("sidekick").setup(opts)
+
+        -- Only offer the CLIs actually used. sidekick merges its defaults
+        -- into cli.tools, so drop the rest after setup.
+        local tools = require("sidekick.config").cli.tools
+        for name in pairs(tools) do
+          if name ~= "claude" and name ~= "opencode" then
+            tools[name] = nil
+          end
+        end
+
+        -- Keep the CLI split at a third of the screen when the terminal or
+        -- monitor size changes (sidekick only sizes it when it opens).
+        vim.api.nvim_create_autocmd("VimResized", {
+          group = vim.api.nvim_create_augroup("luiz_sidekick_resize", { clear = true }),
+          callback = function()
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+              local buf = vim.api.nvim_win_get_buf(win)
+              if vim.bo[buf].filetype == "sidekick_terminal" and vim.api.nvim_win_get_config(win).relative == "" then
+                vim.api.nvim_win_set_width(win, math.floor(vim.o.columns / 3))
+              end
+            end
+          end,
+        })
 
         -- sidekick lists any listening `opencode` process as an attachable
         -- external session, including opencode v2's background
