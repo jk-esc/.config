@@ -10,6 +10,7 @@ Personal config for macOS — Neovim, Ghostty, Starship, and a few other tools.
 - [BerkeleyMono Nerd Font](https://www.nerdfonts.com/) (or swap in any Nerd Font)
 - `git`, `ripgrep`, `fd` — used by Telescope
 - Language runtimes as needed (Node, Python, Java, Go, Rust via rustup) — Mason handles the LSP servers, formatters and debuggers
+- Rust: `rustup component add rust-analyzer` (rustaceanvim uses the toolchain's rust-analyzer, not Mason's)
 - A GitHub Copilot account for AI completions (`:LspCopilotSignIn` once)
 
 ## Installation
@@ -40,14 +41,15 @@ Open Neovim — lazy.nvim bootstraps itself and installs all plugins on first la
 
 | Category | Plugin |
 |----------|--------|
-| LSP | nvim-lspconfig, Mason, nvim-jdtls (Java) |
+| LSP | nvim-lspconfig, Mason, nvim-jdtls (Java), rustaceanvim + crates.nvim (Rust), SchemaStore (JSON/YAML) |
 | Completion | blink.cmp |
 | AI | Copilot (native inline completion), sidekick.nvim (next-edit suggestions, AI CLI split) |
 | Fuzzy finding | Telescope |
 | File tree | nvim-tree |
 | Git | gitsigns |
 | Formatting | conform.nvim |
-| Debugging | nvim-dap, dap-python, dap-go, codelldb (C/C++/Rust) |
+| Debugging | nvim-dap, dap-python, dap-go, codelldb (C/C++/Rust), js-debug-adapter (JS/TS) |
+| Testing | neotest (Go, Python, Vitest, Jest, Rust) |
 | Syntax | nvim-treesitter |
 | Diagnostics | trouble.nvim |
 | UI | bufferline, lualine, alpha, dressing, indent-blankline |
@@ -129,6 +131,29 @@ Open Neovim — lazy.nvim bootstraps itself and installs all plugins on first la
 | `<leader>jn` / `<leader>jc` | Test nearest method / class |
 | `<leader>jl` | Run code lens |
 | `<leader>ju` | Update project config (after editing pom.xml / build.gradle) |
+
+**Rust (rustaceanvim)**
+
+| Key | Action |
+|-----|--------|
+| `<leader>Rr` / `<leader>Rt` / `<leader>Rd` | Runnables / testables / debuggables |
+| `<leader>Rm` | Expand macro |
+| `<leader>Re` | Explain error under cursor |
+| `<leader>Rh` | Hover actions |
+| `<leader>Ra` | Grouped code actions |
+| `<leader>Rc` | Open Cargo.toml |
+
+**Testing (neotest)**
+
+| Key | Action |
+|-----|--------|
+| `<leader>Tr` / `<leader>Tf` / `<leader>Ta` | Run nearest / file / all tests |
+| `<leader>Tl` | Re-run last test |
+| `<leader>Td` | Debug nearest test |
+| `<leader>TS` | Stop tests |
+| `<leader>Ts` | Toggle test summary |
+| `<leader>To` / `<leader>TO` | Show output / toggle output panel |
+| `<leader>Tw` | Watch tests in file |
 
 **Git (gitsigns)**
 
