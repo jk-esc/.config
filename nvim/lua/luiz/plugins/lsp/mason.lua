@@ -70,6 +70,23 @@ return {
 			},
 		})
 
+		-- ts_ls only sends inlay hints when these preferences are set
+		local ts_inlay_hints = {
+			includeInlayParameterNameHints = "literals",
+			includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+			includeInlayFunctionParameterTypeHints = true,
+			includeInlayVariableTypeHints = false,
+			includeInlayPropertyDeclarationTypeHints = true,
+			includeInlayFunctionLikeReturnTypeHints = true,
+			includeInlayEnumMemberValueHints = true,
+		}
+		vim.lsp.config("ts_ls", {
+			settings = {
+				typescript = { inlayHints = ts_inlay_hints },
+				javascript = { inlayHints = ts_inlay_hints },
+			},
+		})
+
 		-- package.json, tsconfig, GitHub workflows, docker-compose, ... validation
 		vim.lsp.config("jsonls", {
 			settings = {
