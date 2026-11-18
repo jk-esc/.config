@@ -14,7 +14,7 @@ return {
         yaml = prettier,
         markdown = prettier,
         lua = { "stylua" },
-        python = { "ruff_format" },
+        python = { "ruff_organize_imports", "ruff_format" },
         go = { "goimports", "gofumpt" },
         rust = { "rustfmt" }, -- from the rustup toolchain
         toml = { "taplo" },

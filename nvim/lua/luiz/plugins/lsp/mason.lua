@@ -38,6 +38,13 @@ return {
 			},
 		})
 
+		-- pyright owns hover for python; ruff's duplicate hover only adds noise
+		vim.lsp.config("ruff", {
+			on_attach = function(client)
+				client.server_capabilities.hoverProvider = false
+			end,
+		})
+
 		vim.lsp.config("gopls", {
 			settings = {
 				gopls = {
