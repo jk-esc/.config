@@ -5,11 +5,12 @@ Personal config for macOS — Neovim, Ghostty, Starship, and a few other tools.
 ## Requirements
 
 - macOS (primary target)
-- [Neovim](https://neovim.io/) ≥ 0.10
+- [Neovim](https://neovim.io/) ≥ 0.12
 - [Ghostty](https://ghostty.org/) terminal
 - [BerkeleyMono Nerd Font](https://www.nerdfonts.com/) (or swap in any Nerd Font)
 - `git`, `ripgrep`, `fd` — used by Telescope
-- Language runtimes as needed (Node, Python, Java) — Mason handles the LSP servers
+- Language runtimes as needed (Node, Python, Java, Go, Rust via rustup) — Mason handles the LSP servers, formatters and debuggers
+- A GitHub Copilot account for AI completions (`:LspCopilotSignIn` once)
 
 ## Installation
 
@@ -41,11 +42,12 @@ Open Neovim — lazy.nvim bootstraps itself and installs all plugins on first la
 |----------|--------|
 | LSP | nvim-lspconfig, Mason, nvim-jdtls (Java) |
 | Completion | blink.cmp |
+| AI | Copilot (native inline completion), sidekick.nvim (next-edit suggestions, AI CLI split) |
 | Fuzzy finding | Telescope |
 | File tree | nvim-tree |
 | Git | gitsigns |
 | Formatting | conform.nvim |
-| Debugging | nvim-dap |
+| Debugging | nvim-dap, dap-python, dap-go, codelldb (C/C++/Rust) |
 | Syntax | nvim-treesitter |
 | Diagnostics | trouble.nvim |
 | UI | bufferline, lualine, alpha, dressing, indent-blankline |
@@ -96,11 +98,37 @@ Open Neovim — lazy.nvim bootstraps itself and installs all plugins on first la
 | `gt` | Show type definition |
 | `<leader>k` | Hover documentation |
 | `<leader>rn` | Rename symbol |
-| `<leader>ca` | Code action |
+| `gra` | Code action (normal + visual, Neovim built-in) |
+| `<leader>ih` | Toggle inlay hints |
 | `gl` | Line diagnostics |
 | `<leader>fd` | File diagnostics |
 | `[d` / `]d` | Previous / next diagnostic |
 | `<leader>rs` | Restart LSP |
+
+**Completion & AI**
+
+| Key | Action |
+|-----|--------|
+| `<C-j>` / `<C-k>` | Next / previous completion item |
+| `<CR>` | Accept completion item |
+| `<Tab>` | Accept Copilot ghost text → apply next-edit suggestion → next snippet field → tab |
+| `<C-]>` | Cycle Copilot suggestions (insert mode) |
+| `<Tab>` (normal) | Jump to / apply next-edit suggestion |
+| `<leader>aa` / `<leader>as` | Toggle / select AI CLI |
+| `<leader>ac` / `<leader>ao` | Toggle Claude Code / opencode |
+| `<leader>at` / `<leader>av` | Send this / selection to AI CLI |
+| `<leader>ap` | Pick an AI prompt |
+
+**Java (nvim-jdtls)**
+
+| Key | Action |
+|-----|--------|
+| `<leader>jo` | Organize imports |
+| `<leader>jv` / `<leader>jx` | Extract variable / constant (normal + visual) |
+| `<leader>jm` | Extract method (visual) |
+| `<leader>jn` / `<leader>jc` | Test nearest method / class |
+| `<leader>jl` | Run code lens |
+| `<leader>ju` | Update project config (after editing pom.xml / build.gradle) |
 
 **Git (gitsigns)**
 
@@ -139,6 +167,8 @@ Open Neovim — lazy.nvim bootstraps itself and installs all plugins on first la
 | `<leader>bi/bo/bO` | Step into / over / out |
 | `<leader>bu` | Toggle DAP UI |
 | `<leader>bt` | Terminate session |
+| `<leader>bm` | Debug test method (Python, Go) |
+| `<leader>bC` / `<leader>bl` | Debug test class (Python) / last test (Go) |
 
 ---
 
