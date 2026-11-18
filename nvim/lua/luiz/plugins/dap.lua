@@ -47,13 +47,20 @@ return {
 		config = function()
 			-- Uses the debugpy installed by mason
 			local mason_path = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
-			require("dap-python").setup(mason_path)
+			local dap_python = require("dap-python")
+			dap_python.setup(mason_path)
 
-			-- Additional python-specific keymaps
-			local keymap = vim.keymap
-			keymap.set("n", "<leader>bm", require("dap-python").test_method, { desc = "Debug test method" })
-			keymap.set("n", "<leader>bC", require("dap-python").test_class, { desc = "Debug test class" })
-			keymap.set("v", "<leader>bs", require("dap-python").debug_selection, { desc = "Debug selection" })
+			-- Additional python-specific keymaps, buffer-local so they don't
+			-- shadow other languages' test keymaps
+			local function set_keymaps(ev)
+				local buf = ev and ev.buf or 0
+				local keymap = vim.keymap
+				keymap.set("n", "<leader>bm", dap_python.test_method, { buffer = buf, desc = "Debug test method" })
+				keymap.set("n", "<leader>bC", dap_python.test_class, { buffer = buf, desc = "Debug test class" })
+				keymap.set("v", "<leader>bs", dap_python.debug_selection, { buffer = buf, desc = "Debug selection" })
+			end
+			vim.api.nvim_create_autocmd("FileType", { pattern = "python", callback = set_keymaps })
+			set_keymaps()
 		end,
 	},
 }
