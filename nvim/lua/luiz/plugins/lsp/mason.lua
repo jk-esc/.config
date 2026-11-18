@@ -37,6 +37,16 @@ return {
 			},
 		})
 
+		-- Copilot: inline completions + next-edit suggestions (sidekick.nvim).
+		-- Never attach to .env files so secrets aren't sent as context.
+		vim.lsp.config("copilot", {
+			root_dir = function(bufnr, on_dir)
+				if not vim.fs.basename(vim.api.nvim_buf_get_name(bufnr)):match("^%.env") then
+					on_dir(vim.fs.root(bufnr, ".git") or vim.fn.getcwd())
+				end
+			end,
+		})
+
 		---@diagnostic disable-next-line: missing-fields
 		mason_lspconfig.setup({
 			-- automatic_enable starts every *installed* Mason server, so exclude:
@@ -51,6 +61,7 @@ return {
 				"clangd",
 				"pyright",
 				"bashls",
+				"copilot", -- AI inline completions (sign in with :LspCopilotSignIn)
 				-- web dev
 				"ts_ls",
 				"svelte",

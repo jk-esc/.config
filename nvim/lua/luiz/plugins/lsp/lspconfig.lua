@@ -82,6 +82,12 @@ return {
 		-- inline parameter/type hints from servers that provide them (jdtls, rust-analyzer, gopls)
 		vim.lsp.inlay_hint.enable()
 
+		-- Copilot ghost text; <Tab> accepts it (see blink-cmp.lua)
+		vim.lsp.inline_completion.enable()
+		keymap.set("i", "<C-]>", function()
+			vim.lsp.inline_completion.select({ count = 1 })
+		end, { desc = "Next Copilot suggestion" })
+
 		-- Configure diagnostic signs using the new API
 		vim.diagnostic.config({
 			signs = {

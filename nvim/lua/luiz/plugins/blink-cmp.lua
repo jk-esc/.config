@@ -8,6 +8,34 @@ return {
       version = "v2.*",
     },
     "rafamadriz/friendly-snippets",
+    -- Copilot next-edit suggestions (used by the <Tab> chain below) and an
+    -- AI CLI split (Claude Code / opencode) under <leader>a
+    {
+      "folke/sidekick.nvim",
+      opts = {
+        cli = { picker = "telescope" },
+      },
+      keys = {
+        {
+          "<Tab>",
+          function()
+            -- jump to / apply a next-edit suggestion, otherwise a normal <Tab>
+            if not require("sidekick").nes_jump_or_apply() then
+              return "<Tab>"
+            end
+          end,
+          expr = true,
+          desc = "Goto/Apply next edit suggestion",
+        },
+        { "<leader>aa", function() require("sidekick.cli").toggle() end, desc = "Toggle AI CLI" },
+        { "<leader>as", function() require("sidekick.cli").select() end, desc = "Select AI CLI" },
+        { "<leader>ac", function() require("sidekick.cli").toggle({ name = "claude", focus = true }) end, desc = "Toggle Claude Code" },
+        { "<leader>ao", function() require("sidekick.cli").toggle({ name = "opencode", focus = true }) end, desc = "Toggle opencode" },
+        { "<leader>at", function() require("sidekick.cli").send({ msg = "{this}" }) end, mode = { "n", "x" }, desc = "Send this to AI CLI" },
+        { "<leader>av", function() require("sidekick.cli").send({ msg = "{selection}" }) end, mode = "x", desc = "Send selection to AI CLI" },
+        { "<leader>ap", function() require("sidekick.cli").prompt() end, mode = { "n", "x" }, desc = "Pick AI prompt" },
+      },
+    },
   },
   opts = {
     -- dressing.nvim renders vim.ui.input (nvim-tree add/rename/delete prompts)
@@ -25,7 +53,17 @@ return {
       ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
       ["<C-e>"] = { "hide", "fallback" },
       ["<CR>"] = { "accept", "fallback" },
-      ["<Tab>"] = { "snippet_forward", "fallback" },
+      -- Zed-style: Copilot ghost text > next-edit suggestion > snippet jump > <Tab>
+      ["<Tab>"] = {
+        function()
+          return vim.lsp.inline_completion.get()
+        end,
+        function()
+          return require("sidekick").nes_jump_or_apply()
+        end,
+        "snippet_forward",
+        "fallback",
+      },
       ["<S-Tab>"] = { "snippet_backward", "fallback" },
       ["<C-s>"] = { "show_signature", "hide_signature", "fallback" },
     },
@@ -36,7 +74,8 @@ return {
       accept = {
         auto_brackets = { enabled = true },
       },
-      ghost_text = { enabled = true },
+      -- off: Copilot's inline ghost text takes this spot
+      ghost_text = { enabled = false },
       documentation = {
         auto_show = true,
         auto_show_delay_ms = 200,
