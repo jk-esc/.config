@@ -82,11 +82,16 @@ return {
 		-- inline parameter/type hints from servers that provide them (jdtls, rust-analyzer, gopls)
 		vim.lsp.inlay_hint.enable()
 
-		-- Copilot ghost text; <Tab> accepts it (see blink-cmp.lua)
+		-- Copilot ghost text; <Tab> accepts it (see blink-cmp.lua).
+		-- <C-n>/<C-p> cycle its alternatives (blink's menu uses <C-j>/<C-k>,
+		-- so Nvim's native <C-n>/<C-p> keyword completion isn't needed)
 		vim.lsp.inline_completion.enable()
-		keymap.set("i", "<C-]>", function()
+		keymap.set("i", "<C-n>", function()
 			vim.lsp.inline_completion.select({ count = 1 })
 		end, { desc = "Next Copilot suggestion" })
+		keymap.set("i", "<C-p>", function()
+			vim.lsp.inline_completion.select({ count = -1 })
+		end, { desc = "Previous Copilot suggestion" })
 
 		-- Configure diagnostic signs using the new API
 		vim.diagnostic.config({
