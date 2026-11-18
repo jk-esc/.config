@@ -165,6 +165,9 @@ return {
 				"gofumpt", -- stricter gofmt
 				"delve", -- go debugger
 				"codelldb", -- c/c++/rust debugger
+				-- bash (bashls picks these up for lint + format)
+				"shellcheck",
+				"shfmt",
 				-- java (driven by nvim-jdtls, not mason-lspconfig)
 				"jdtls", -- java language server
 				"java-debug-adapter", -- debugging bundle

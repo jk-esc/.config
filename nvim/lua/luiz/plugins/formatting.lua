@@ -18,6 +18,7 @@ return {
         go = { "goimports", "gofumpt" },
         rust = { "rustfmt" }, -- from the rustup toolchain
         toml = { "taplo" },
+        sh = { "shfmt" }, -- bash/sh scripts (indent follows shiftwidth)
         -- web dev
         javascript = prettier,
         javascriptreact = prettier,
