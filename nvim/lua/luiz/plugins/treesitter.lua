@@ -34,6 +34,10 @@ return {
 			"tsx",
 			"html",
 			"css",
+			"scss",
+			"jsdoc",
+			"graphql",
+			"regex",
 			"svelte",
 		})
 

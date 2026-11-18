@@ -4,6 +4,7 @@ return {
 	dependencies = {
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		"b0o/SchemaStore.nvim", -- json/yaml schemas for jsonls + yamlls
 	},
 	config = function()
 		-- import mason
@@ -62,6 +63,24 @@ return {
 			},
 		})
 
+		-- package.json, tsconfig, GitHub workflows, docker-compose, ... validation
+		vim.lsp.config("jsonls", {
+			settings = {
+				json = {
+					schemas = require("schemastore").json.schemas(),
+					validate = { enable = true },
+				},
+			},
+		})
+		vim.lsp.config("yamlls", {
+			settings = {
+				yaml = {
+					schemaStore = { enable = false, url = "" }, -- use SchemaStore.nvim's catalog instead
+					schemas = require("schemastore").yaml.schemas(),
+				},
+			},
+		})
+
 		-- Copilot: inline completions + next-edit suggestions (sidekick.nvim).
 		-- Never attach to .env files so secrets aren't sent as context.
 		vim.lsp.config("copilot", {
@@ -97,12 +116,16 @@ return {
 				"cssls",
 				"eslint",
 				"tailwindcss",
+				"emmet_language_server",
+				"jsonls",
+				"yamlls",
 			},
 		})
 
 		mason_tool_installer.setup({
 			ensure_installed = {
 				"prettier", -- prettier formatter
+				"prettierd", -- prettier daemon (faster format on save)
 				"stylua", -- lua formatter
 				"ruff", -- python linter (auto-enabled as an LSP) + formatter
 				"debugpy", -- python debugger

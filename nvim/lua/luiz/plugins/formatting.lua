@@ -4,26 +4,30 @@ return {
   config = function()
     local conform = require("conform")
 
+    -- prettierd keeps a prettier daemon warm (much faster saves); fall back to
+    -- plain prettier if the daemon isn't available
+    local prettier = { "prettierd", "prettier", stop_after_first = true }
+
     conform.setup({
       formatters_by_ft = {
-        json = { "prettier" },
-        yaml = { "prettier" },
-        markdown = { "prettier" },
+        json = prettier,
+        yaml = prettier,
+        markdown = prettier,
         lua = { "stylua" },
         python = { "ruff_format" },
         go = { "goimports", "gofumpt" },
         rust = { "rustfmt" }, -- from the rustup toolchain
         toml = { "taplo" },
         -- web dev
-        javascript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescript = { "prettier" },
-        typescriptreact = { "prettier" },
-        svelte = { "prettier" },
-        html = { "prettier" },
-        css = { "prettier" },
-        scss = { "prettier" },
-        graphql = { "prettier" },
+        javascript = prettier,
+        javascriptreact = prettier,
+        typescript = prettier,
+        typescriptreact = prettier,
+        svelte = prettier,
+        html = prettier,
+        css = prettier,
+        scss = prettier,
+        graphql = prettier,
       },
       format_on_save = {
         lsp_format = "fallback",
