@@ -110,6 +110,7 @@ return {
 				"goimports", -- import fixer + formatter
 				"gofumpt", -- stricter gofmt
 				"delve", -- go debugger
+				"codelldb", -- c/c++/rust debugger
 				-- java (driven by nvim-jdtls, not mason-lspconfig)
 				"jdtls", -- java language server
 				"java-debug-adapter", -- debugging bundle

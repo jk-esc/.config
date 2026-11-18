@@ -25,6 +25,27 @@ return {
 				dapui.close()
 			end
 
+			-- C/C++/Rust via the codelldb installed by mason
+			dap.adapters.codelldb = {
+				type = "executable",
+				command = vim.fn.stdpath("data") .. "/mason/bin/codelldb",
+			}
+			local codelldb = {
+				{
+					name = "Launch executable",
+					type = "codelldb",
+					request = "launch",
+					program = function()
+						return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+					end,
+					cwd = "${workspaceFolder}",
+					stopOnEntry = false,
+				},
+			}
+			dap.configurations.c = codelldb
+			dap.configurations.cpp = codelldb
+			dap.configurations.rust = codelldb
+
 			-- Keymaps
 			local keymap = vim.keymap
 			keymap.set("n", "<leader>bb", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
