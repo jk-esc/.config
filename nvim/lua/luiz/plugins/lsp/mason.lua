@@ -62,14 +62,6 @@ return {
 			},
 		})
 
-		vim.lsp.config("rust_analyzer", {
-			settings = {
-				["rust-analyzer"] = {
-					check = { command = "clippy" }, -- lint with clippy on save
-				},
-			},
-		})
-
 		-- ts_ls only sends inlay hints when these preferences are set
 		local ts_inlay_hints = {
 			includeInlayParameterNameHints = "literals",
@@ -119,9 +111,10 @@ return {
 		mason_lspconfig.setup({
 			-- automatic_enable starts every *installed* Mason server, so exclude:
 			-- jdtls (managed by nvim-jdtls in lua/luiz/plugins/lsp/java.lua),
+			-- rust_analyzer (managed by rustaceanvim in lua/luiz/plugins/lsp/rust.lua),
 			-- pylsp (pyright + ruff cover python), stylua (conform formats lua).
 			automatic_enable = {
-				exclude = { "jdtls", "pylsp", "stylua" },
+				exclude = { "jdtls", "rust_analyzer", "pylsp", "stylua" },
 			},
 			-- list of servers for mason to install
 			ensure_installed = {
@@ -131,7 +124,6 @@ return {
 				"bashls",
 				"copilot", -- AI inline completions (sign in with :LspCopilotSignIn)
 				"gopls",
-				"rust_analyzer",
 				"taplo", -- toml (Cargo.toml)
 				-- web dev
 				"ts_ls",
