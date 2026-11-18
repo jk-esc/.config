@@ -116,7 +116,11 @@ Open Neovim — lazy.nvim bootstraps itself and installs all plugins on first la
 | `<Tab>` | Accept Copilot ghost text → apply next-edit suggestion → next snippet field → tab |
 | `<C-n>` / `<C-p>` | Next / previous Copilot suggestion (insert mode) |
 | `<Tab>` (normal) | Jump to / apply next-edit suggestion |
-| `<leader>aa` / `<leader>as` | Toggle / select AI CLI |
+| `<leader>aa` | Show / hide the running AI CLI (picker only if none or several are running) |
+| `<leader>as` | Pick an AI CLI to start or switch to |
+| `<leader>ad` | Detach the current AI CLI session |
+| `<C-.>` / `<C-z>` (inside the CLI) | Hide it / jump back to code, leaving it open |
+| `<C-q>` (inside the CLI) | Normal mode (scroll, copy) |
 | `<leader>ac` / `<leader>ao` | Toggle Claude Code / opencode |
 | `<leader>at` / `<leader>av` | Send this / selection to AI CLI |
 | `<leader>ap` | Pick an AI prompt |

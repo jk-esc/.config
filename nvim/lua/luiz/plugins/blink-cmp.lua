@@ -15,6 +15,26 @@ return {
       opts = {
         cli = { picker = "telescope" },
       },
+      config = function(_, opts)
+        require("sidekick").setup(opts)
+
+        -- sidekick lists any listening `opencode` process as an attachable
+        -- external session, including opencode v2's background
+        -- `opencode serve --service` daemon. That one has no terminal, so once
+        -- it's picked, toggling (<leader>aa) silently does nothing. Hide it.
+        local Session = require("sidekick.cli.session")
+        Session.setup()
+        local backend = Session.backends.opencode
+        if backend then
+          local sessions = backend.sessions
+          backend.sessions = function(...)
+            return vim.tbl_filter(function(s)
+              local cmd = vim.system({ "ps", "-o", "command=", "-p", tostring(s.pid) }):wait().stdout or ""
+              return not cmd:find("opencode serve", 1, true)
+            end, sessions(...))
+          end
+        end
+      end,
       keys = {
         {
           "<Tab>",
@@ -29,6 +49,7 @@ return {
         },
         { "<leader>aa", function() require("sidekick.cli").toggle() end, desc = "Toggle AI CLI" },
         { "<leader>as", function() require("sidekick.cli").select() end, desc = "Select AI CLI" },
+        { "<leader>ad", function() require("sidekick.cli").close() end, desc = "Detach AI CLI session" },
         { "<leader>ac", function() require("sidekick.cli").toggle({ name = "claude", focus = true }) end, desc = "Toggle Claude Code" },
         { "<leader>ao", function() require("sidekick.cli").toggle({ name = "opencode", focus = true }) end, desc = "Toggle opencode" },
         { "<leader>at", function() require("sidekick.cli").send({ msg = "{this}" }) end, mode = { "n", "x" }, desc = "Send this to AI CLI" },
