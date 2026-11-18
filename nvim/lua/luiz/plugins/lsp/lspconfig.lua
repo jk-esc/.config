@@ -47,8 +47,8 @@ return {
 				opts.desc = "Show LSP type definitions"
 				keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
 
-				opts.desc = "See available code actions"
-				keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
+				-- code actions use Nvim's built-in `gra` (normal + visual); a
+				-- <leader>ca mapping would shadow <leader>c + a-textobjects ("_c)
 
 				opts.desc = "Smart rename"
 				keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
@@ -71,8 +71,16 @@ return {
 
 				opts.desc = "Show documentation for what is under cursor"
 				keymap.set("n", "<leader>k", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+
+				opts.desc = "Toggle inlay hints"
+				keymap.set("n", "<leader>ih", function()
+					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+				end, opts) -- toggle inline parameter/type hints
 			end,
 		})
+
+		-- inline parameter/type hints from servers that provide them (jdtls, rust-analyzer, gopls)
+		vim.lsp.inlay_hint.enable()
 
 		-- Configure diagnostic signs using the new API
 		vim.diagnostic.config({
