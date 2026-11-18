@@ -12,6 +12,8 @@ return {
         lua = { "stylua" },
         python = { "ruff_format" },
         go = { "goimports", "gofumpt" },
+        rust = { "rustfmt" }, -- from the rustup toolchain
+        toml = { "taplo" },
         -- web dev
         javascript = { "prettier" },
         javascriptreact = { "prettier" },

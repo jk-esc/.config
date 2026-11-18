@@ -27,6 +27,8 @@ return {
 			"gomod",
 			"gosum",
 			"gowork",
+			"rust",
+			"toml",
 			"javascript",
 			"typescript",
 			"tsx",

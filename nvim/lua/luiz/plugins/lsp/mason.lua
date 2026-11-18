@@ -54,6 +54,14 @@ return {
 			},
 		})
 
+		vim.lsp.config("rust_analyzer", {
+			settings = {
+				["rust-analyzer"] = {
+					check = { command = "clippy" }, -- lint with clippy on save
+				},
+			},
+		})
+
 		-- Copilot: inline completions + next-edit suggestions (sidekick.nvim).
 		-- Never attach to .env files so secrets aren't sent as context.
 		vim.lsp.config("copilot", {
@@ -80,6 +88,8 @@ return {
 				"bashls",
 				"copilot", -- AI inline completions (sign in with :LspCopilotSignIn)
 				"gopls",
+				"rust_analyzer",
+				"taplo", -- toml (Cargo.toml)
 				-- web dev
 				"ts_ls",
 				"svelte",
