@@ -81,15 +81,28 @@ return {
 
 		local capabilities = require("blink.cmp").get_lsp_capabilities()
 
+		-- Maven multi-module projects often have no wrapper: climb from the
+		-- nearest pom.xml while the parent directory also has one, so every
+		-- module shares the aggregator's root (and workspace).
+		local function outermost_pom(dir)
+			while dir do
+				local parent = vim.fs.dirname(dir)
+				if parent == dir or not vim.uv.fs_stat(vim.fs.joinpath(parent, "pom.xml")) then
+					break
+				end
+				dir = parent
+			end
+			return dir
+		end
+
 		local function start()
-			-- Prefer the outermost build (wrapper/settings file) so multi-module
-			-- projects share one root, then any build file, then the git root.
-			local root_markers = {
-				{ "gradlew", "mvnw", "settings.gradle", "settings.gradle.kts" },
-				{ "pom.xml", "build.gradle", "build.gradle.kts" },
-				".git",
-			}
-			local root_dir = vim.fs.root(0, root_markers) or vim.fn.getcwd()
+			-- Prefer the outermost build (wrapper/settings file, or the top of a
+			-- pom.xml chain) so multi-module projects share one root, then any
+			-- gradle build file, then the git root.
+			local root_dir = vim.fs.root(0, { "gradlew", "mvnw", "settings.gradle", "settings.gradle.kts" })
+				or outermost_pom(vim.fs.root(0, "pom.xml"))
+				or vim.fs.root(0, { { "build.gradle", "build.gradle.kts" }, ".git" })
+				or vim.fn.getcwd()
 
 			-- One workspace per project keeps jdtls indexes isolated. The path
 			-- hash keeps same-named projects (e.g. two "Week_1" dirs) apart.
