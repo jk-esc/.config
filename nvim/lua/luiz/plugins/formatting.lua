@@ -11,6 +11,7 @@ return {
         markdown = { "prettier" },
         lua = { "stylua" },
         python = { "ruff_format" },
+        go = { "goimports", "gofumpt" },
         -- web dev
         javascript = { "prettier" },
         javascriptreact = { "prettier" },

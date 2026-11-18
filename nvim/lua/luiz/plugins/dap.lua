@@ -63,4 +63,23 @@ return {
 			set_keymaps()
 		end,
 	},
+	{
+		"leoluz/nvim-dap-go",
+		dependencies = { "mfussenegger/nvim-dap" },
+		ft = "go",
+		config = function()
+			-- Uses the delve (dlv) installed by mason
+			local dap_go = require("dap-go")
+			dap_go.setup()
+
+			-- Additional go-specific keymaps, buffer-local like the python ones
+			local function set_keymaps(ev)
+				local buf = ev and ev.buf or 0
+				vim.keymap.set("n", "<leader>bm", dap_go.debug_test, { buffer = buf, desc = "Debug test method" })
+				vim.keymap.set("n", "<leader>bl", dap_go.debug_last_test, { buffer = buf, desc = "Debug last test" })
+			end
+			vim.api.nvim_create_autocmd("FileType", { pattern = "go", callback = set_keymaps })
+			set_keymaps()
+		end,
+	},
 }

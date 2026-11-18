@@ -37,6 +37,23 @@ return {
 			},
 		})
 
+		vim.lsp.config("gopls", {
+			settings = {
+				gopls = {
+					gofumpt = true,
+					staticcheck = true,
+					hints = {
+						assignVariableTypes = true,
+						compositeLiteralFields = true,
+						constantValues = true,
+						functionTypeParameters = true,
+						parameterNames = true,
+						rangeVariableTypes = true,
+					},
+				},
+			},
+		})
+
 		-- Copilot: inline completions + next-edit suggestions (sidekick.nvim).
 		-- Never attach to .env files so secrets aren't sent as context.
 		vim.lsp.config("copilot", {
@@ -62,6 +79,7 @@ return {
 				"pyright",
 				"bashls",
 				"copilot", -- AI inline completions (sign in with :LspCopilotSignIn)
+				"gopls",
 				-- web dev
 				"ts_ls",
 				"svelte",
@@ -78,6 +96,10 @@ return {
 				"stylua", -- lua formatter
 				"ruff", -- python linter (auto-enabled as an LSP) + formatter
 				"debugpy", -- python debugger
+				-- go
+				"goimports", -- import fixer + formatter
+				"gofumpt", -- stricter gofmt
+				"delve", -- go debugger
 				-- java (driven by nvim-jdtls, not mason-lspconfig)
 				"jdtls", -- java language server
 				"java-debug-adapter", -- debugging bundle
