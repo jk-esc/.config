@@ -145,4 +145,40 @@ return {
 			set_keymaps()
 		end,
 	},
+	{
+		-- One test runner for go, python, js/ts (vitest + jest) and rust;
+		-- java tests stay on nvim-jdtls (<leader>jn / <leader>jc)
+		"nvim-neotest/neotest",
+		dependencies = {
+			"nvim-neotest/nvim-nio",
+			"nvim-lua/plenary.nvim",
+			"nvim-neotest/neotest-python",
+			"fredrikaverpil/neotest-golang",
+			"marilari88/neotest-vitest",
+			"nvim-neotest/neotest-jest",
+		},
+		keys = {
+			{ "<leader>Tr", function() require("neotest").run.run() end, desc = "Run nearest test" },
+			{ "<leader>Tf", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run tests in file" },
+			{ "<leader>Ta", function() require("neotest").run.run(vim.uv.cwd()) end, desc = "Run all tests" },
+			{ "<leader>Tl", function() require("neotest").run.run_last() end, desc = "Run last test" },
+			{ "<leader>Td", function() require("neotest").run.run({ strategy = "dap" }) end, desc = "Debug nearest test" },
+			{ "<leader>TS", function() require("neotest").run.stop() end, desc = "Stop tests" },
+			{ "<leader>Ts", function() require("neotest").summary.toggle() end, desc = "Toggle test summary" },
+			{ "<leader>To", function() require("neotest").output.open({ enter = true, auto_close = true }) end, desc = "Show test output" },
+			{ "<leader>TO", function() require("neotest").output_panel.toggle() end, desc = "Toggle test output panel" },
+			{ "<leader>Tw", function() require("neotest").watch.toggle(vim.fn.expand("%")) end, desc = "Watch tests in file" },
+		},
+		config = function()
+			require("neotest").setup({
+				adapters = {
+					require("neotest-python")({ dap = { justMyCode = false } }),
+					require("neotest-golang")({ runner = "gotestsum" }), -- gotestsum from mason
+					require("neotest-vitest"),
+					require("neotest-jest")({}),
+					require("rustaceanvim.neotest"),
+				},
+			})
+		end,
+	},
 }

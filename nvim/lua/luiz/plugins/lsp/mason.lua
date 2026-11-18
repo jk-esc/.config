@@ -164,6 +164,7 @@ return {
 				"goimports", -- import fixer + formatter
 				"gofumpt", -- stricter gofmt
 				"delve", -- go debugger
+				"gotestsum", -- go test runner used by neotest-golang
 				"codelldb", -- c/c++/rust debugger
 				-- bash (bashls picks these up for lint + format)
 				"shellcheck",
