@@ -150,6 +150,7 @@ return {
 			ensure_installed = {
 				"prettier", -- prettier formatter
 				"prettierd", -- prettier daemon (faster format on save)
+				"js-debug-adapter", -- js/ts debugger (node + chrome)
 				"stylua", -- lua formatter
 				"ruff", -- python linter (auto-enabled as an LSP) + formatter
 				"debugpy", -- python debugger

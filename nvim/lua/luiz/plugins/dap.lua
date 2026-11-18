@@ -46,6 +46,48 @@ return {
 			dap.configurations.cpp = codelldb
 			dap.configurations.rust = codelldb
 
+			-- JS/TS (node + chrome) via the js-debug-adapter installed by mason
+			for _, adapter in ipairs({ "pwa-node", "pwa-chrome" }) do
+				dap.adapters[adapter] = {
+					type = "server",
+					host = "localhost",
+					port = "${port}",
+					executable = {
+						command = vim.fn.stdpath("data") .. "/mason/bin/js-debug-adapter",
+						args = { "${port}" },
+					},
+				}
+			end
+			local js = {
+				{
+					name = "Launch file (node)",
+					type = "pwa-node",
+					request = "launch",
+					program = "${file}", -- node 23.6+ runs .ts files directly
+					cwd = "${workspaceFolder}",
+					sourceMaps = true,
+				},
+				{
+					name = "Attach to node process",
+					type = "pwa-node",
+					request = "attach",
+					processId = require("dap.utils").pick_process,
+					cwd = "${workspaceFolder}",
+				},
+				{
+					name = "Launch Chrome",
+					type = "pwa-chrome",
+					request = "launch",
+					url = function()
+						return vim.fn.input("URL: ", "http://localhost:5173")
+					end,
+					webRoot = "${workspaceFolder}",
+				},
+			}
+			for _, ft in ipairs({ "javascript", "typescript", "javascriptreact", "typescriptreact", "svelte" }) do
+				dap.configurations[ft] = js
+			end
+
 			-- Keymaps
 			local keymap = vim.keymap
 			keymap.set("n", "<leader>bb", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
