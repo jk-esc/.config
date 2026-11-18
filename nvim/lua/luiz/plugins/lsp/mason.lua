@@ -38,6 +38,19 @@ return {
 			},
 		})
 
+		-- clang-tidy lints + detailed completion items. Projects beyond single
+		-- files need a compile_commands.json (cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+		-- or `bear -- make`) so clangd knows the include paths/flags.
+		vim.lsp.config("clangd", {
+			cmd = {
+				"clangd",
+				"--background-index",
+				"--clang-tidy",
+				"--completion-style=detailed",
+				"--header-insertion=iwyu",
+			},
+		})
+
 		-- pyright owns hover for python; ruff's duplicate hover only adds noise
 		vim.lsp.config("ruff", {
 			on_attach = function(client)
@@ -120,6 +133,7 @@ return {
 			ensure_installed = {
 				"lua_ls",
 				"clangd",
+				"neocmake", -- CMakeLists.txt
 				"pyright",
 				"bashls",
 				"copilot", -- AI inline completions (sign in with :LspCopilotSignIn)

@@ -21,6 +21,8 @@ return {
 			"vimdoc",
 			"c",
 			"cpp",
+			"cmake",
+			"make",
 			"java",
 			"python",
 			"go",
