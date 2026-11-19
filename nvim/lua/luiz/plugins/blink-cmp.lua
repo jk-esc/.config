@@ -16,7 +16,7 @@ return {
         cli = {
           picker = "telescope",
           -- fractions are relative to the editor width when the window opens
-          win = { split = { width = 1 / 3 } },
+          win = { split = { width = 1 / 4 } },
         },
       },
       config = function(_, opts)
@@ -31,7 +31,7 @@ return {
           end
         end
 
-        -- Keep the CLI split at a third of the screen when the terminal or
+        -- Keep the CLI split at a quarter of the screen when the terminal or
         -- monitor size changes (sidekick only sizes it when it opens).
         vim.api.nvim_create_autocmd("VimResized", {
           group = vim.api.nvim_create_augroup("luiz_sidekick_resize", { clear = true }),
@@ -39,7 +39,7 @@ return {
             for _, win in ipairs(vim.api.nvim_list_wins()) do
               local buf = vim.api.nvim_win_get_buf(win)
               if vim.bo[buf].filetype == "sidekick_terminal" and vim.api.nvim_win_get_config(win).relative == "" then
-                vim.api.nvim_win_set_width(win, math.floor(vim.o.columns / 3))
+                vim.api.nvim_win_set_width(win, math.floor(vim.o.columns / 4))
               end
             end
           end,
